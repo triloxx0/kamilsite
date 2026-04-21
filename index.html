@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudMarket — Маркетплейс услуг для студентов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #FF6B2B;
+    --orange-light: #FF8C55;
+    --orange-dim: rgba(255,107,43,0.12);
+    --khaki: #7A8C5A;
+    --khaki-light: #9AAD72;
+    --khaki-dim: rgba(122,140,90,0.12);
+    --bg: #F5F3EE;
+    --bg2: #EDEAE2;
+    --bg3: #FFFFFF;
+    --text: #1A1A18;
+    --text2: #4A4A42;
+    --text3: #7A7A70;
+    --border: rgba(26,26,24,0.12);
+    --border2: rgba(26,26,24,0.22);
+    --card-bg: #FFFFFF;
+    --shadow: 0 2px 16px rgba(26,26,24,0.08);
+    --shadow-lg: 0 8px 40px rgba(26,26,24,0.14);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-xs: 6px;
+  }
+  [data-theme="dark"] {
+    --bg: #141412;
+    --bg2: #1C1C19;
+    --bg3: #242420;
+    --text: #F0EDE6;
+    --text2: #B8B5AA;
+    --text3: #7A7A70;
+    --border: rgba(240,237,230,0.1);
+    --border2: rgba(240,237,230,0.2);
+    --card-bg: #242420;
+    --shadow: 0 2px 16px rgba(0,0,0,0.3);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.4);
+    --orange-dim: rgba(255,107,43,0.15);
+    --khaki-dim: rgba(154,173,114,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+    transition: background 0.3s, color 0.3s;
+    overflow-x: hidden;
+  }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 58px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 17px; font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--orange); }
+  .nav-right { display: flex; align-items: center; gap: 8px; }
+  .btn-theme {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    color: var(--text2);
+    cursor: pointer; font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .btn-theme:hover { border-color: var(--orange); color: var(--orange); }
+  .btn-nav {
+    padding: 8px 18px; border-radius: 50px;
+    background: var(--orange); color: #fff;
+    border: none; cursor: pointer;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600; font-size: 13px;
+    transition: all 0.2s;
+  }
+  .btn-nav:hover { background: var(--orange-light); transform: translateY(-1px); }
+  .nav-links { display: none; }
+  @media(min-width:768px){
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { color: var(--text2); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--orange); }
+    nav { padding: 0 2rem; }
+  }
+
+  .hero {
+    padding: 56px 1.2rem 48px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, var(--orange-dim) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 50px;
+    background: var(--khaki-dim);
+    border: 1px solid var(--khaki-light);
+    color: var(--khaki); font-size: 12px; font-weight: 600;
+    margin-bottom: 20px; letter-spacing: 0.5px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .hero-badge::before { content: '⬡'; font-size: 10px; }
+  .hero h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(26px, 7vw, 52px);
+    font-weight: 900; line-height: 1.1;
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+    animation: fadeUp 0.5s 0.1s ease both;
+  }
+  .hero h1 em { font-style: normal; color: var(--orange); }
+  .hero p {
+    color: var(--text2); font-size: 15px;
+    max-width: 360px; margin: 0 auto 28px;
+    line-height: 1.7;
+    animation: fadeUp 0.5s 0.2s ease both;
+  }
+  .hero-btns {
+    display: flex; flex-direction: column; gap: 10px;
+    align-items: center;
+    animation: fadeUp 0.5s 0.3s ease both;
+  }
+  .btn-primary {
+    padding: 14px 32px; border-radius: 50px;
+    background: var(--orange); color: #fff;
+    border: none; cursor: pointer;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700; font-size: 15px;
+    width: 100%; max-width: 280px;
+    transition: all 0.25s;
+    box-shadow: 0 4px 20px rgba(255,107,43,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(255,107,43,0.45); }
+  .btn-secondary {
+    padding: 14px 32px; border-radius: 50px;
+    background: transparent; color: var(--text);
+    border: 1.5px solid var(--border2); cursor: pointer;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600; font-size: 15px;
+    width: 100%; max-width: 280px;
+    transition: all 0.25s;
+  }
+  .btn-secondary:hover { border-color: var(--orange); color: var(--orange); }
+  .hero-stats {
+    display: flex; justify-content: center; gap: 24px;
+    margin-top: 40px; flex-wrap: wrap;
+    animation: fadeUp 0.5s 0.4s ease both;
+  }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Unbounded', sans-serif; font-size: 22px; font-weight: 700; color: var(--orange); }
+  .stat-lbl { font-size: 11px; color: var(--text3); font-weight: 500; margin-top: 2px; }
+
+  @media(min-width:768px){
+    .hero { padding: 80px 2rem 72px; }
+    .hero p { font-size: 17px; max-width: 480px; }
+    .hero-btns { flex-direction: row; justify-content: center; }
+    .btn-primary, .btn-secondary { width: auto; }
+  }
+
+  section { padding: 48px 1.2rem; }
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    color: var(--orange); text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(20px, 5vw, 32px);
+    font-weight: 700; line-height: 1.2;
+    letter-spacing: -0.5px; margin-bottom: 8px;
+  }
+  .section-sub { color: var(--text2); font-size: 14px; line-height: 1.7; margin-bottom: 32px; max-width: 420px; }
+  @media(min-width:768px){
+    section { padding: 72px 2rem; }
+    .section-sub { font-size: 15px; }
+  }
+
+  #services { background: var(--bg2); }
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .service-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 14px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .service-card:hover { border-color: var(--orange); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .service-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: var(--orange); opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .service-card:hover::before { opacity: 1; }
+  .service-icon { font-size: 28px; margin-bottom: 10px; display: block; }
+  .service-name { font-weight: 700; font-size: 13px; color: var(--text); margin-bottom: 4px; }
+  .service-count { font-size: 11px; color: var(--text3); }
+  .service-tag {
+    display: inline-block; margin-top: 10px;
+    padding: 3px 10px; border-radius: 50px;
+    background: var(--khaki-dim); color: var(--khaki);
+    font-size: 10px; font-weight: 700;
+    border: 1px solid var(--khaki-light);
+  }
+  @media(min-width:600px){
+    .services-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  }
+  @media(min-width:900px){
+    .services-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  }
+
+  #ai { background: var(--bg); }
+  .ai-wrapper {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .ai-header {
+    padding: 14px 18px;
+    background: linear-gradient(135deg, var(--orange) 0%, #FF8C55 100%);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ai-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.6); }
+  .ai-dot:first-child { background: rgba(255,255,255,1); }
+  .ai-header-title { color: #fff; font-weight: 700; font-size: 13px; margin-left: 4px; font-family: 'Unbounded', sans-serif; }
+  .ai-header-sub { color: rgba(255,255,255,0.75); font-size: 11px; margin-left: auto; }
+  .ai-chat { padding: 16px; min-height: 240px; max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+  .ai-msg { display: flex; gap: 10px; align-items: flex-start; }
+  .ai-msg.user { flex-direction: row-reverse; }
+  .ai-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--orange); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0; font-weight: 700;
+  }
+  .ai-avatar.bot { background: var(--khaki); }
+  .ai-bubble {
+    background: var(--bg2); border-radius: 14px 14px 14px 4px;
+    padding: 10px 14px; font-size: 13px; line-height: 1.6;
+    max-width: 80%; color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .ai-msg.user .ai-bubble { background: var(--orange-dim); border-radius: 14px 14px 4px 14px; border-color: rgba(255,107,43,0.2); }
+  .ai-thinking { display: flex; gap: 4px; padding: 8px 0; }
+  .ai-thinking span {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--orange); opacity: 0.4;
+    animation: bounce 1.2s infinite;
+  }
+  .ai-thinking span:nth-child(2) { animation-delay: 0.2s; }
+  .ai-thinking span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%,80%,100%{transform:scale(1);opacity:.4} 40%{transform:scale(1.4);opacity:1} }
+  .ai-input-row {
+    padding: 12px;
+    border-top: 1px solid var(--border);
+    display: flex; gap: 8px;
+    background: var(--bg2);
+  }
+  .ai-input {
+    flex: 1; padding: 10px 14px;
+    border: 1px solid var(--border2);
+    border-radius: 50px;
+    background: var(--bg3);
+    color: var(--text); font-size: 13px;
+    font-family: 'Manrope', sans-serif;
+    outline: none; transition: border-color 0.2s;
+  }
+  .ai-input:focus { border-color: var(--orange); }
+  .ai-send {
+    width: 40px; height: 40px;
+    border-radius: 50%; background: var(--orange);
+    border: none; color: #fff; cursor: pointer;
+    font-size: 16px; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; flex-shrink: 0;
+  }
+  .ai-send:hover { background: var(--orange-light); transform: scale(1.08); }
+  .ai-suggestions { padding: 10px 12px 4px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .ai-sugg-btn {
+    padding: 5px 12px; border-radius: 50px;
+    background: var(--bg2); border: 1px solid var(--border);
+    color: var(--text2); font-size: 11px; cursor: pointer;
+    transition: all 0.2s; font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+  }
+  .ai-sugg-btn:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-dim); }
+
+  #database { background: var(--bg2); }
+  .db-panel {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .db-header {
+    padding: 14px 18px;
+    background: var(--khaki);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .db-icon { font-size: 18px; }
+  .db-header-title { color: #fff; font-weight: 700; font-size: 13px; font-family: 'Unbounded', sans-serif; }
+  .db-header-badge { margin-left: auto; background: rgba(255,255,255,0.2); color: #fff; font-size: 10px; padding: 3px 10px; border-radius: 50px; font-weight: 600; }
+  .db-search-row { padding: 12px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; }
+  .db-input {
+    flex: 1; padding: 9px 14px;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    background: var(--bg2); color: var(--text);
+    font-size: 13px; font-family: 'Manrope', sans-serif;
+    outline: none; transition: border-color 0.2s;
+  }
+  .db-input:focus { border-color: var(--khaki); }
+  .db-btn {
+    padding: 9px 16px; border-radius: var(--radius-sm);
+    background: var(--khaki); border: none; color: #fff;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: 'Manrope', sans-serif; transition: all 0.2s;
+  }
+  .db-btn:hover { background: var(--khaki-light); }
+  .db-status { padding: 10px 18px; font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 6px; min-height: 32px; }
+  .db-progress-bar {
+    height: 3px; background: var(--bg2);
+    position: relative; overflow: hidden;
+  }
+  .db-progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--khaki), var(--khaki-light));
+    width: 0%; transition: width 0.15s linear;
+  }
+  .db-results { padding: 0; }
+  .db-row {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+    transition: background 0.2s; cursor: pointer;
+    opacity: 0; transform: translateX(-6px);
+    animation: slideIn 0.3s ease forwards;
+  }
+  .db-row:hover { background: var(--bg2); }
+  .db-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--khaki-dim); display: flex;
+    align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px; color: var(--khaki);
+    flex-shrink: 0;
+  }
+  .db-row-name { font-weight: 600; font-size: 13px; }
+  .db-row-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .db-row-price { margin-left: auto; font-weight: 700; color: var(--orange); font-size: 14px; white-space: nowrap; }
+  .db-row-rating { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 3px; }
+  .db-row-rating::before { content: '★'; color: #F5A623; }
+  .db-empty { padding: 32px; text-align: center; color: var(--text3); font-size: 13px; }
+  @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+
+  #how { background: var(--bg); }
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: flex; gap: 16px;
+    padding: 0 0 28px;
+    position: relative;
+  }
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute; left: 19px; top: 44px; bottom: 0;
+    width: 2px; background: var(--border);
+  }
+  .step-num {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--orange); color: #fff;
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; z-index: 1; position: relative;
+  }
+  .step-content { padding-top: 8px; }
+  .step-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+  .step-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
+  @media(min-width:768px){
+    .steps { flex-direction: row; gap: 0; justify-content: space-between; }
+    .step { flex-direction: column; align-items: center; text-align: center; flex: 1; padding: 0 16px; }
+    .step:not(:last-child)::after { left: calc(50% + 20px); top: 20px; bottom: auto; height: 2px; width: calc(100% - 40px); }
+    .step-content { padding-top: 0; }
+  }
+
+  #register { background: var(--bg2); }
+  .register-wrap {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    max-width: 480px; margin: 0 auto;
+  }
+  .register-header {
+    padding: 22px 22px 0;
+    text-align: center;
+  }
+  .register-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-top: 16px; }
+  .reg-tab {
+    flex: 1; padding: 10px;
+    border: none; background: none;
+    font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 13px;
+    color: var(--text3); cursor: pointer; transition: all 0.2s;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+  }
+  .reg-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
+  .register-form { padding: 20px 22px 22px; display: none; }
+  .register-form.active { display: block; }
+  .form-group { margin-bottom: 14px; }
+  .form-label { font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 6px; display: block; }
+  .form-input {
+    width: 100%; padding: 11px 14px;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    background: var(--bg2); color: var(--text);
+    font-size: 14px; font-family: 'Manrope', sans-serif;
+    outline: none; transition: all 0.2s;
+  }
+  .form-input:focus { border-color: var(--orange); background: var(--bg3); }
+  .form-select {
+    width: 100%; padding: 11px 14px;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    background: var(--bg2); color: var(--text);
+    font-size: 14px; font-family: 'Manrope', sans-serif;
+    outline: none; cursor: pointer;
+    -webkit-appearance: none; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A7A70' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .form-role-btns { display: flex; gap: 8px; }
+  .role-btn {
+    flex: 1; padding: 10px 8px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    background: transparent; color: var(--text2);
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    font-family: 'Manrope', sans-serif; transition: all 0.2s;
+    text-align: center;
+  }
+  .role-btn.selected { border-color: var(--orange); background: var(--orange-dim); color: var(--orange); }
+  .role-btn span { display: block; font-size: 20px; margin-bottom: 4px; }
+  .form-check { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 16px; }
+  .form-check input[type="checkbox"] { margin-top: 2px; accent-color: var(--orange); }
+  .form-check label { font-size: 11px; color: var(--text3); line-height: 1.5; }
+  .form-check a { color: var(--orange); }
+  .btn-submit {
+    width: 100%; padding: 13px;
+    background: var(--orange); color: #fff;
+    border: none; border-radius: 50px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700; font-size: 15px;
+    cursor: pointer; transition: all 0.25s;
+    box-shadow: 0 4px 16px rgba(255,107,43,0.3);
+  }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(255,107,43,0.4); }
+  .form-divider { text-align: center; font-size: 12px; color: var(--text3); margin: 14px 0; position: relative; }
+  .form-divider::before {
+    content: ''; position: absolute; top: 50%; left: 0; right: 0;
+    height: 1px; background: var(--border);
+  }
+  .form-divider span { background: var(--card-bg); padding: 0 12px; position: relative; }
+  .social-btns { display: flex; gap: 8px; }
+  .social-btn {
+    flex: 1; padding: 10px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border2);
+    background: transparent; color: var(--text);
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: 'Manrope', sans-serif; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .social-btn:hover { border-color: var(--orange); color: var(--orange); }
+  .success-msg {
+    display: none; text-align: center; padding: 24px;
+  }
+  .success-icon { font-size: 48px; margin-bottom: 12px; }
+  .success-title { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 18px; color: var(--khaki); margin-bottom: 8px; }
+  .success-sub { font-size: 13px; color: var(--text2); }
+
+  footer {
+    background: var(--bg3);
+    border-top: 1px solid var(--border);
+    padding: 32px 1.2rem;
+    text-align: center;
+  }
+  .footer-logo { font-family: 'Unbounded', sans-serif; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+  .footer-logo span { color: var(--orange); }
+  .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-bottom: 20px; }
+  .footer-links a { font-size: 12px; color: var(--text3); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--orange); }
+  .footer-copy { font-size: 11px; color: var(--text3); }
+
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    width: 100%; max-width: 340px;
+    padding: 24px; position: relative;
+    animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  @keyframes modalIn { from { opacity:0; transform: scale(0.88) translateY(20px); } }
+  .modal-close {
+    position: absolute; top: 14px; right: 14px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--bg2); border: none; color: var(--text3);
+    cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .modal-close:hover { color: var(--orange); background: var(--orange-dim); }
+  .modal-title { font-family: 'Unbounded', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .modal-sub { font-size: 12px; color: var(--text3); margin-bottom: 18px; }
+  .modal-service-info {
+    background: var(--bg2); border-radius: var(--radius-sm);
+    padding: 12px; margin-bottom: 16px;
+    display: flex; gap: 10px; align-items: center;
+  }
+  .modal-service-icon { font-size: 28px; }
+  .modal-service-name { font-weight: 700; font-size: 14px; }
+  .modal-service-price { font-size: 13px; color: var(--orange); font-weight: 600; }
+
+  .toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--text); color: var(--bg);
+    padding: 10px 20px; border-radius: 50px;
+    font-size: 13px; font-weight: 600; z-index: 2000;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
+    opacity: 0; pointer-events: none; white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+
+  .ai-chat::-webkit-scrollbar { width: 4px; }
+  .ai-chat::-webkit-scrollbar-track { background: transparent; }
+  .ai-chat::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  @media(min-width:900px){
+    .services-grid { grid-template-columns: repeat(4, 1fr); }
+    #ai .container, #database .container { max-width: 600px; margin: 0 auto; }
+    .register-wrap { max-width: 540px; }
+  }
+
+  .container { max-width: 900px; margin: 0 auto; }
+
+  .features-stripe {
+    background: var(--orange);
+    padding: 14px 1.2rem;
+    overflow: hidden; position: relative;
+  }
+  .features-scroll { display: flex; gap: 32px; width: max-content; animation: scrollLeft 18s linear infinite; }
+  .features-stripe:hover .features-scroll { animation-play-state: paused; }
+  .feat-item { display: flex; align-items: center; gap: 8px; color: #fff; font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .feat-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.5); }
+  @keyframes scrollLeft { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  #reviews { background: var(--bg); }
+  .reviews-grid { display: flex; flex-direction: column; gap: 12px; }
+  .review-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px;
+  }
+  .review-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .review-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--orange-dim); display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; color: var(--orange);
+  }
+  .review-name { font-weight: 700; font-size: 13px; }
+  .review-role { font-size: 11px; color: var(--text3); }
+  .review-stars { margin-left: auto; color: #F5A623; font-size: 13px; }
+  .review-text { font-size: 13px; color: var(--text2); line-height: 1.6; }
+  @media(min-width:600px){
+    .reviews-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  }
+  @media(min-width:900px){
+    .reviews-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<nav>
+  <a class="nav-logo" href="#"><span>Stud</span>Market</a>
+  <div class="nav-links">
+    <a href="#services">Услуги</a>
+    <a href="#ai">ИИ-поиск</a>
+    <a href="#how">Как работает</a>
+    <a href="#reviews">Отзывы</a>
+  </div>
+  <div class="nav-right">
+    <button class="btn-theme" id="themeBtn" title="Сменить тему">🌙</button>
+    <button class="btn-nav" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">Войти</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">Маркетплейс для студентов</div>
+  <h1>Найди нужную<br><em>услугу</em> быстро</h1>
+  <p>Помощь с учёбой, фриланс, репетиторство — всё в одном месте для студентов колледжей</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.getElementById('ai').scrollIntoView({behavior:'smooth'})">🔍 Найти услугу</button>
+    <button class="btn-secondary" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">Стать исполнителем</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">1 200+</div><div class="stat-lbl">Исполнителей</div></div>
+    <div class="stat"><div class="stat-num">340+</div><div class="stat-lbl">Услуг</div></div>
+    <div class="stat"><div class="stat-num">4.8★</div><div class="stat-lbl">Средний рейтинг</div></div>
+  </div>
+</section>
+
+<div class="features-stripe">
+  <div class="features-scroll" id="featureScroll">
+    <div class="feat-item"><span class="feat-dot"></span>Безопасные платежи</div>
+    <div class="feat-item"><span class="feat-dot"></span>Проверенные исполнители</div>
+    <div class="feat-item"><span class="feat-dot"></span>ИИ-подбор специалистов</div>
+    <div class="feat-item"><span class="feat-dot"></span>Гарантия возврата</div>
+    <div class="feat-item"><span class="feat-dot"></span>Быстрый отклик</div>
+    <div class="feat-item"><span class="feat-dot"></span>Только студенты колледжа</div>
+    <div class="feat-item"><span class="feat-dot"></span>Безопасные платежи</div>
+    <div class="feat-item"><span class="feat-dot"></span>Проверенные исполнители</div>
+    <div class="feat-item"><span class="feat-dot"></span>ИИ-подбор специалистов</div>
+    <div class="feat-item"><span class="feat-dot"></span>Гарантия возврата</div>
+    <div class="feat-item"><span class="feat-dot"></span>Быстрый отклик</div>
+    <div class="feat-item"><span class="feat-dot"></span>Только студенты колледжа</div>
+  </div>
+</div>
+
+<section id="services">
+  <div class="container">
+    <div class="section-label">Категории</div>
+    <h2 class="section-title">Все нужные услуги</h2>
+    <p class="section-sub">Репетиторство, помощь с курсовыми, дизайн, программирование и многое другое</p>
+    <div class="services-grid">
+      <div class="service-card" onclick="openService('📚','Учёба и курсовые','от 500 ₸')">
+        <span class="service-icon">📚</span>
+        <div class="service-name">Учёба и курсовые</div>
+        <div class="service-count">186 услуг</div>
+        <span class="service-tag">Популярное</span>
+      </div>
+      <div class="service-card" onclick="openService('💻','Программирование','от 1 500 ₸')">
+        <span class="service-icon">💻</span>
+        <div class="service-name">Программирование</div>
+        <div class="service-count">94 услуги</div>
+        <span class="service-tag">Топ</span>
+      </div>
+      <div class="service-card" onclick="openService('🎨','Дизайн','от 800 ₸')">
+        <span class="service-icon">🎨</span>
+        <div class="service-name">Дизайн и графика</div>
+        <div class="service-count">77 услуг</div>
+      </div>
+      <div class="service-card" onclick="openService('📊','Презентации','от 400 ₸')">
+        <span class="service-icon">📊</span>
+        <div class="service-name">Презентации</div>
+        <div class="service-count">112 услуг</div>
+      </div>
+      <div class="service-card" onclick="openService('✏️','Репетиторство','от 1 000 ₸')">
+        <span class="service-icon">✏️</span>
+        <div class="service-name">Репетиторство</div>
+        <div class="service-count">58 услуг</div>
+      </div>
+      <div class="service-card" onclick="openService('📸','Фото и видео','от 2 000 ₸')">
+        <span class="service-icon">📸</span>
+        <div class="service-name">Фото и видео</div>
+        <div class="service-count">43 услуги</div>
+      </div>
+      <div class="service-card" onclick="openService('📝','Тексты и переводы','от 300 ₸')">
+        <span class="service-icon">📝</span>
+        <div class="service-name">Тексты и переводы</div>
+        <div class="service-count">65 услуг</div>
+      </div>
+      <div class="service-card" onclick="openService('🎵','Музыка и аудио','от 1 200 ₸')">
+        <span class="service-icon">🎵</span>
+        <div class="service-name">Музыка и аудио</div>
+        <div class="service-count">29 услуг</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ai">
+  <div class="container">
+    <div class="section-label">ИИ-помощник</div>
+    <h2 class="section-title">Умный поиск</h2>
+    <p class="section-sub">Опишите что вам нужно — ИИ подберёт подходящих исполнителей за секунды</p>
+    <div class="ai-wrapper">
+      <div class="ai-header">
+        <div class="ai-dot"></div>
+        <div class="ai-dot"></div>
+        <div class="ai-dot"></div>
+        <div class="ai-header-title">StudAI</div>
+        <div class="ai-header-sub">онлайн</div>
+      </div>
+      <div class="ai-chat" id="aiChat">
+        <div class="ai-msg">
+          <div class="ai-avatar bot">AI</div>
+          <div class="ai-bubble">Привет! 👋 Я помогу найти нужного специалиста на нашем маркетплейсе. Что вам нужно?</div>
+        </div>
+      </div>
+      <div class="ai-suggestions">
+        <button class="ai-sugg-btn" onclick="sendAI(this.textContent)">Помощь с курсовой</button>
+        <button class="ai-sugg-btn" onclick="sendAI(this.textContent)">Сделать презентацию</button>
+        <button class="ai-sugg-btn" onclick="sendAI(this.textContent)">Репетитор по математике</button>
+        <button class="ai-sugg-btn" onclick="sendAI(this.textContent)">Написать диплом</button>
+      </div>
+      <div class="ai-input-row">
+        <input class="ai-input" id="aiInput" placeholder="Опишите задачу..." onkeydown="if(event.key==='Enter')sendAI()">
+        <button class="ai-send" onclick="sendAI()">➤</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="database">
+  <div class="container">
+    <div class="section-label">База данных</div>
+    <h2 class="section-title">Каталог исполнителей</h2>
+    <p class="section-sub">Поиск по базе верифицированных студентов-специалистов</p>
+    <div class="db-panel">
+      <div class="db-header">
+        <span class="db-icon">🗄️</span>
+        <div class="db-header-title">StudDB v2.1</div>
+        <div class="db-header-badge">● Онлайн</div>
+      </div>
+      <div class="db-search-row">
+        <input class="db-input" id="dbInput" placeholder="Поиск: имя, специальность, навык..." onkeydown="if(event.key==='Enter')searchDB()">
+        <button class="db-btn" onclick="searchDB()">Найти</button>
+      </div>
+      <div class="db-status" id="dbStatus">Введите запрос для поиска по базе</div>
+      <div class="db-progress-bar"><div class="db-progress-fill" id="dbProgress"></div></div>
+      <div class="db-results" id="dbResults">
+        <div class="db-empty">Результаты поиска появятся здесь</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="container">
+    <div class="section-label">Как это работает</div>
+    <h2 class="section-title">Три простых шага</h2>
+    <p class="section-sub">Найти исполнителя и получить услугу очень просто</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Создайте запрос</div>
+          <div class="step-desc">Опишите задачу или воспользуйтесь ИИ-поиском. Укажите бюджет и сроки.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Выберите исполнителя</div>
+          <div class="step-desc">Просмотрите профили, портфолио и отзывы. Сравните предложения.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Получите результат</div>
+          <div class="step-desc">Оплата после выполнения. Гарантия качества и возврата средств.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="container">
+    <div class="section-label">Отзывы</div>
+    <h2 class="section-title">Говорят студенты</h2>
+    <p class="section-sub">Реальные истории успеха с нашего маркетплейса</p>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar">АМ</div>
+          <div><div class="review-name">Алина Мухаметова</div><div class="review-role">Студент, 2 курс</div></div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+        <div class="review-text">Нашла репетитора по высшей математике за 10 минут. Помог сдать экзамен с первого раза!</div>
+      </div>
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar" style="background:var(--khaki-dim);color:var(--khaki)">ДС</div>
+          <div><div class="review-name">Данияр Сейткали</div><div class="review-role">Фрилансер</div></div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+        <div class="review-text">Уже заработал 45 000 ₸ за месяц помогая однокурсникам с курсовыми. Удобная платформа!</div>
+      </div>
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar">ЗА</div>
+          <div><div class="review-name">Зарина Абдрахман</div><div class="review-role">Студент, 3 курс</div></div>
+          <div class="review-stars">★★★★☆</div>
+        </div>
+        <div class="review-text">ИИ сразу подобрал 5 подходящих дизайнеров. Презентация для диплома готова была за день!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="register">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:24px;">
+      <div class="section-label">Регистрация</div>
+      <h2 class="section-title">Присоединяйся сейчас</h2>
+      <p class="section-sub" style="margin:0 auto;">Зарегистрируйся как заказчик или исполнитель</p>
+    </div>
+    <div class="register-wrap">
+      <div class="register-header">
+        <div style="font-size:32px;margin-bottom:4px;">🎓</div>
+        <div style="font-family:'Unbounded',sans-serif;font-weight:700;font-size:16px;">StudMarket</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:4px;">Только для студентов колледжей</div>
+        <div class="register-tabs">
+          <button class="reg-tab active" onclick="switchTab('login')">Вход</button>
+          <button class="reg-tab" onclick="switchTab('register')">Регистрация</button>
+        </div>
+      </div>
+
+      <div class="register-form active" id="formLogin">
+        <div class="form-group">
+          <label class="form-label">Электронная почта</label>
+          <input class="form-input" type="email" placeholder="student@college.kz">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Пароль</label>
+          <input class="form-input" type="password" placeholder="••••••••">
+        </div>
+        <div style="text-align:right;margin-bottom:14px;">
+          <a href="#" style="font-size:12px;color:var(--orange);text-decoration:none;">Забыли пароль?</a>
+        </div>
+        <button class="btn-submit" onclick="submitLogin()">Войти</button>
+        <div class="form-divider"><span>или</span></div>
+        <div class="social-btns">
+          <button class="social-btn" onclick="showToast('Вход через VK')">VK</button>
+          <button class="social-btn" onclick="showToast('Вход через Google')">Google</button>
+        </div>
+      </div>
+
+      <div class="register-form" id="formRegister">
+        <div class="form-group">
+          <label class="form-label">Я хочу:</label>
+          <div class="form-role-btns">
+            <button class="role-btn selected" id="roleClient" onclick="selectRole('client')">
+              <span>📦</span>Заказывать
+            </button>
+            <button class="role-btn" id="roleFreelancer" onclick="selectRole('freelancer')">
+              <span>⚡</span>Выполнять
+            </button>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Имя</label>
+            <input class="form-input" placeholder="Камиль">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Фамилия</label>
+            <input class="form-input" placeholder="Иванов">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" placeholder="student@college.kz">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Колледж</label>
+          <select class="form-select form-input">
+            <option value="">Выберите колледж...</option>
+            <option>Колледж информационных технологий</option>
+            <option>Экономический колледж №1</option>
+            <option>Медицинский колледж</option>
+            <option>Политехнический колледж</option>
+            <option>Другой</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Пароль</label>
+          <input class="form-input" type="password" placeholder="Минимум 8 символов">
+        </div>
+        <div class="form-check">
+          <input type="checkbox" id="agree" checked>
+          <label for="agree">Согласен с <a href="#">условиями использования</a> и <a href="#">политикой конфиденциальности</a></label>
+        </div>
+        <button class="btn-submit" onclick="submitRegister()">Создать аккаунт</button>
+      </div>
+
+      <div class="success-msg" id="successMsg">
+        <div class="success-icon">🎉</div>
+        <div class="success-title">Добро пожаловать!</div>
+        <div class="success-sub">Аккаунт успешно создан. Начни использовать маркетплейс прямо сейчас!</div>
+        <button class="btn-submit" style="margin-top:16px;max-width:200px;display:block;margin:16px auto 0;" onclick="resetForm()">На главную</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo"><span>Stud</span>Market</div>
+  <div class="footer-links">
+    <a href="#">О проекте</a>
+    <a href="#">Условия</a>
+    <a href="#">Конфиденциальность</a>
+    <a href="#">Поддержка</a>
+    <a href="#">Контакты</a>
+  </div>
+  <div class="footer-copy">© 2026 StudMarket — дипломный проект Камиля. Все права защищены.</div>
+</footer>
+
+<div class="modal-overlay" id="serviceModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">Заказать услугу</div>
+    <div class="modal-sub">Выберите исполнителя и оформите заказ</div>
+    <div class="modal-service-info">
+      <div class="modal-service-icon" id="modalIcon">📚</div>
+      <div>
+        <div class="modal-service-name" id="modalName">Услуга</div>
+        <div class="modal-service-price" id="modalPrice">от 500 ₸</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Опишите задачу</label>
+      <textarea class="form-input" rows="3" placeholder="Что именно нужно сделать?" style="resize:none;border-radius:10px;"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Бюджет (₸)</label>
+        <input class="form-input" type="number" placeholder="1000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Срок (дней)</label>
+        <input class="form-input" type="number" placeholder="3">
+      </div>
+    </div>
+    <button class="btn-submit" onclick="orderService()">Разместить заказ</button>
+  </div>
+</div>
+
+<script>
+const themeBtn = document.getElementById('themeBtn');
+let dark = false;
+themeBtn.onclick = () => {
+  dark = !dark;
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  themeBtn.textContent = dark ? '☀️' : '🌙';
+};
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+const aiResponses = [
+  { k: ['курсов', 'диплом', 'реферат', 'учёб', 'учеб'], r: '📚 Нашёл 12 специалистов по учебным работам! Лучший вариант — **Айдана К.** (рейт. 4.9), помогла 47 студентам. Цена от 800 ₸. Хотите посмотреть её профиль?' },
+  { k: ['программ', 'код', 'python', 'java', 'сайт', 'приложен'], r: '💻 По программированию нашёл 8 разработчиков онлайн. Рекомендую **Данияра С.** — специализируется на Python и веб. Цена от 1 500 ₸/час. Средний срок — 2–3 дня.' },
+  { k: ['дизайн', 'логотип', 'баннер', 'презентац'], r: '🎨 Нашёл 6 дизайнеров. Топ-исполнитель — **Зарина А.** (рейт. 5.0), 3+ года опыта. Презентации от 500 ₸, логотипы от 1 200 ₸. Свободна сегодня!' },
+  { k: ['репетит', 'матем', 'физик', 'химия', 'английск'], r: '✏️ По репетиторству — 5 онлайн. **Асель М.** — репетитор по математике и физике, студентка 4 курса. Рейтинг 4.8. Пробный урок — 500 ₸. Занятия онлайн и оффлайн.' },
+  { k: ['фото', 'видео', 'съёмк', 'монтаж'], r: '📸 Фотографов и видеооператоров нашёл 4. Лучший — **Нурлан Б.**, снимает для портфолио и мероприятий. От 2 000 ₸/час. Есть собственная техника.' },
+  { k: ['текст', 'перевод', 'копирайт', 'статья'], r: '📝 Копирайтеров и переводчиков — 9. **Малика Т.** пишет научные статьи и переводит (KZ/RU/EN). Цена от 300 ₸/1000 символов. Срочные заказы — от 3 часов.' },
+];
+const defaultResp = '🤖 Понял ваш запрос! Ищу подходящих специалистов в базе... Найдено **7 исполнителей** по вашему запросу. Хотите отфильтровать по цене или рейтингу?';
+
+function sendAI(text) {
+  const input = document.getElementById('aiInput');
+  const msg = text || input.value.trim();
+  if (!msg) return;
+  input.value = '';
+
+  const chat = document.getElementById('aiChat');
+
+  const userDiv = document.createElement('div');
+  userDiv.className = 'ai-msg user';
+  userDiv.innerHTML = `<div class="ai-avatar" style="background:var(--orange)">Я</div><div class="ai-bubble">${msg}</div>`;
+  chat.appendChild(userDiv);
+
+  const thinkDiv = document.createElement('div');
+  thinkDiv.className = 'ai-msg';
+  thinkDiv.innerHTML = `<div class="ai-avatar bot">AI</div><div class="ai-bubble"><div class="ai-thinking"><span></span><span></span><span></span></div></div>`;
+  chat.appendChild(thinkDiv);
+  chat.scrollTop = chat.scrollHeight;
+
+  const msgLow = msg.toLowerCase();
+  let resp = defaultResp;
+  for (const r of aiResponses) {
+    if (r.k.some(k => msgLow.includes(k))) { resp = r.r; break; }
+  }
+
+  setTimeout(() => {
+    thinkDiv.remove();
+    const botDiv = document.createElement('div');
+    botDiv.className = 'ai-msg';
+    botDiv.innerHTML = `<div class="ai-avatar bot">AI</div><div class="ai-bubble">${resp.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div>`;
+    chat.appendChild(botDiv);
+    chat.scrollTop = chat.scrollHeight;
+  }, 1200 + Math.random() * 600);
+}
+
+const dbData = [
+  { init:'АК', name:'Айдана Кенжебаева', spec:'Курсовые, Рефераты', price:'800 ₸/работа', rating:'4.9' },
+  { init:'ДС', name:'Данияр Сейткали', spec:'Python, Web, React', price:'1 500 ₸/час', rating:'4.8' },
+  { init:'ЗА', name:'Зарина Абдрахман', spec:'Дизайн, Презентации', price:'500 ₸/слайд', rating:'5.0' },
+  { init:'АМ', name:'Асель Мухамедова', spec:'Математика, Физика', price:'1 000 ₸/урок', rating:'4.8' },
+  { init:'НБ', name:'Нурлан Бекенов', spec:'Фото, Видеомонтаж', price:'2 000 ₸/час', rating:'4.7' },
+  { init:'МТ', name:'Малика Тажиева', spec:'Тексты, Переводы KZ/RU', price:'300 ₸/1000 сим', rating:'4.9' },
+  { init:'ЕС', name:'Ерлан Сулейменов', spec:'Java, C++, Алгоритмы', price:'2 000 ₸/час', rating:'4.6' },
+  { init:'ДЖ', name:'Дина Жaksыбекova', spec:'Бухучёт, Экономика', price:'700 ₸/работа', rating:'4.7' },
+  { init:'АА', name:'Арман Алиев', spec:'SMM, Контент', price:'500 ₸/пост', rating:'4.5' },
+  { init:'СК', name:'Сауле Кабылова', spec:'Английский, Немецкий', price:'1 200 ₸/урок', rating:'4.9' },
+];
+
+function searchDB() {
+  const q = document.getElementById('dbInput').value.trim().toLowerCase();
+  const status = document.getElementById('dbStatus');
+  const results = document.getElementById('dbResults');
+  const progress = document.getElementById('dbProgress');
+
+  if (!q) { showToast('Введите запрос для поиска'); return; }
+
+  results.innerHTML = '';
+  status.textContent = 'Подключение к базе данных...';
+  progress.style.width = '0%';
+
+  let w = 0;
+  const interval = setInterval(() => {
+    w += Math.random() * 15 + 8;
+    if (w >= 100) { w = 100; clearInterval(interval); }
+    progress.style.width = w + '%';
+  }, 80);
+
+  const stages = ['Подключение к базе данных...', 'Поиск совпадений...', 'Ранжирование результатов...', 'Готово!'];
+  let si = 0;
+  const stageInt = setInterval(() => {
+    if (si < stages.length) { status.textContent = stages[si++]; }
+    else clearInterval(stageInt);
+  }, 350);
+
+  setTimeout(() => {
+    const found = dbData.filter(d =>
+      d.name.toLowerCase().includes(q) ||
+      d.spec.toLowerCase().includes(q) ||
+      d.price.toLowerCase().includes(q)
+    );
+
+    results.innerHTML = '';
+    if (found.length === 0) {
+      results.innerHTML = `<div class="db-empty">По запросу «${q}» ничего не найдено</div>`;
+      status.textContent = `Результаты: 0 записей`;
+      return;
+    }
+    status.textContent = `Найдено: ${found.length} исполнителей`;
+    found.forEach((d, i) => {
+      const row = document.createElement('div');
+      row.className = 'db-row';
+      row.style.animationDelay = (i * 80) + 'ms';
+      row.innerHTML = `<div class="db-avatar">${d.init}</div><div><div class="db-row-name">${d.name}</div><div class="db-row-sub">${d.spec}</div><div class="db-row-rating">${d.rating}</div></div><div class="db-row-price">${d.price}</div>`;
+      row.onclick = () => showToast(`Профиль: ${d.name}`);
+      results.appendChild(row);
+    });
+  }, 1500);
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.reg-tab').forEach((t,i) => t.classList.toggle('active', (i===0) === (tab==='login')));
+  document.getElementById('formLogin').classList.toggle('active', tab === 'login');
+  document.getElementById('formRegister').classList.toggle('active', tab === 'register');
+  document.getElementById('successMsg').style.display = 'none';
+}
+
+function selectRole(r) {
+  document.getElementById('roleClient').classList.toggle('selected', r === 'client');
+  document.getElementById('roleFreelancer').classList.toggle('selected', r === 'freelancer');
+}
+
+function submitLogin() {
+  showToast('✓ Вход выполнен успешно!');
+}
+
+function submitRegister() {
+  document.getElementById('formRegister').style.display = 'none';
+  document.getElementById('successMsg').style.display = 'block';
+}
+
+function resetForm() {
+  document.getElementById('formRegister').style.display = '';
+  document.getElementById('successMsg').style.display = 'none';
+  switchTab('login');
+}
+
+
+function openService(icon, name, price) {
+  document.getElementById('modalIcon').textContent = icon;
+  document.getElementById('modalName').textContent = name;
+  document.getElementById('modalPrice').textContent = price;
+  document.getElementById('serviceModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('serviceModal').classList.remove('open');
+}
+
+function orderService() {
+  closeModal();
+  showToast('🎉 Заказ размещён!');
+}
+</script>
+</body>
+</html>
